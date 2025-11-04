@@ -16,6 +16,8 @@ public class PlayerHP : MonoBehaviour
 
     public static PlayerHP instance;
 
+    public float GetMaxO2() => maxO2;
+
     private void Awake()
     {
         if (instance == null)
@@ -89,5 +91,12 @@ public class PlayerHP : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void ApplyO2Stat(float amount)
+    {
+        maxO2 += amount;
+        if (O2Amount > maxO2)
+            O2Amount = maxO2;
     }
 }

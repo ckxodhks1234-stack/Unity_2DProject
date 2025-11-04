@@ -53,19 +53,19 @@ public class ItemData : MonoBehaviour
         allItems.Add(bomb);
 
         //=====================¿Â∫Ò===========================
-        var drill1 = new ItemInfo("µÂ∏±1", ItemType.Equipment, 2000, 3000, drill1Sprite);
+        var drill1 = new ItemInfo("µÂ∏±1", ItemType.Equipment, 2000, 3000, drill1Sprite, EquipType.Drill);
         allItems.Add(drill1);
-        var drill2 = new ItemInfo("µÂ∏±2", ItemType.Equipment, 5000, 7000, drill2Sprite);
+        var drill2 = new ItemInfo("µÂ∏±2", ItemType.Equipment, 5000, 7000, drill2Sprite, EquipType.Drill);
         allItems.Add(drill2);
 
-        var helmet1 = new ItemInfo("«Ô∏‰1", ItemType.Equipment, 2000, 3000, helmet1Sprite);
+        var helmet1 = new ItemInfo("«Ô∏‰1", ItemType.Equipment, 2000, 3000, helmet1Sprite, EquipType.Helmet);
         allItems.Add(helmet1);
-        var helmet2 = new ItemInfo("«Ô∏‰2", ItemType.Equipment, 5000, 7000, helmet1Sprite);
+        var helmet2 = new ItemInfo("«Ô∏‰2", ItemType.Equipment, 5000, 7000, helmet1Sprite, EquipType.Helmet);
         allItems.Add(helmet2);
 
-        var shoes1 = new ItemInfo("Ω≈πﬂ1", ItemType.Equipment, 2000, 3000, shoes1Sprite);
+        var shoes1 = new ItemInfo("Ω≈πﬂ1", ItemType.Equipment, 2000, 3000, shoes1Sprite, EquipType.Shoes);
         allItems.Add(shoes1);                                      
-        var shoes2 = new ItemInfo("Ω≈πﬂ2", ItemType.Equipment, 5000, 7000, shoes2Sprite);
+        var shoes2 = new ItemInfo("Ω≈πﬂ2", ItemType.Equipment, 5000, 7000, shoes2Sprite, EquipType.Shoes);
         allItems.Add(shoes2);
     }
 

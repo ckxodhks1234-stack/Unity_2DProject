@@ -7,6 +7,14 @@ public enum ItemType
     Consum,      //소비아이템(구상, 산소캡슐 등)
     Equipment   //장비아이템(신발, 헬멧, 드릴)
 }
+
+public enum EquipType
+{
+    None,
+    Helmet,
+    Shoes,
+    Drill
+}
 [System.Serializable]
 public class ItemInfo
 {
@@ -16,6 +24,7 @@ public class ItemInfo
     public int sellPrice;
     public int buyPrice;
     public Sprite itemSprite;
+    public EquipType equipType;
 
     [Header("소비")]
     public int healAmount;
@@ -25,14 +34,32 @@ public class ItemInfo
     [Header("장비")]
     public int damageUpAmount;
     public int maxO2UpAmount;
-    public int flyForceUpAmount;
+    public int speedUpAmount;
+    public int flyUpAmount;
 
     public Sprite icon => itemSprite;
 
 
     public void Use()
     {
-            
+        switch (itemType)
+        {
+            case ItemType.Consum:
+                //실제 소비 효과 적용
+                if (healAmount > 0)
+                    Debug.Log($"{itemName} 사용: HP {healAmount} 회복");
+                if (O2UpAmount > 0)
+                    Debug.Log($"{itemName} 사용: O2 {O2UpAmount} 증가");
+                if (damageAmount > 0)
+                    Debug.Log($"{itemName} 사용: 공격력 {damageAmount} 증가");
+                break;
+
+            case ItemType.Equipment:
+            case ItemType.Guitar:
+                //소비가 아닌 아이템은 Use못함
+                Debug.Log($"{itemName}은 사용할 수 없습니다");
+                break;
+        }
     }
 
     public int MaxStack
@@ -48,13 +75,14 @@ public class ItemInfo
             }
         }
     }
-    public ItemInfo(string name, ItemType type, int sellPrice, int buyPrice, Sprite sprite)
+    public ItemInfo(string name, ItemType type, int sellPrice, int buyPrice, Sprite sprite, EquipType equip = EquipType.None)
     {
         itemName = name;
         itemType = type;
         this.sellPrice = sellPrice;
         this.buyPrice = buyPrice;
         itemSprite = sprite;
+        equipType = equip;
     }
 
     //오버라이드하여 내용이 같은 아이템이면 같은키로 인식하기

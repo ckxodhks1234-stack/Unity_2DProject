@@ -29,8 +29,19 @@ public class Inventory : MonoBehaviour
 
         public InventorySlotData(ItemInfo item, int count)
         {
+            if (item == null)
+            {
+                Debug.LogError("InventorySlotData 생성 시 item이 null");
+                return;
+            }
             this.item = item;
             this.count = count;
+
+            //equipType 확인
+            if (item.itemType == ItemType.Equipment && item.equipType == EquipType.None)
+            {
+                Debug.LogWarning($"장비 {item.itemName}의 equipType이 None입니다!");
+            }
         }
     }
 

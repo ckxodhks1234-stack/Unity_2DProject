@@ -27,22 +27,26 @@ public class ShopSlot : MonoBehaviour
     //슬롯 세팅
     public void SetSlot()
     {
-        if (itemData == null)
-        {
-            Debug.LogWarning($"[ShopSlot] {gameObject.name}에 아이템 정보가 없습니다!");
-            return;
-        }
+        if (ShopManager.instance == null) return;
+        int index = transform.GetSiblingIndex();
 
-        iconImage.sprite = itemData.icon;
-        nameText.text = itemData.itemName;
-        //priceText.text = $"{itemData.sellPrice}G";
+        if (index < ShopManager.instance.shopItems.Count)
+        {
+            itemData = ShopManager.instance.shopItems[index];
+            iconImage.sprite = itemData.icon;
+            nameText.text = itemData.itemName;
+
+            GetComponent<Button>().onClick.RemoveAllListeners();
+            GetComponent<Button>().onClick.AddListener(ClickSlot);
+        }
     }
 
-    //구매 시
+    //상점 클릭 시
     private void ClickSlot()
     {
-        if(itemData == null) return;
-        else
-            ShopUI.instance.OpenSellConfirm(itemData);
+        if (itemData != null)
+        {
+            ShopUI.instance.OpenBuyConfirm(itemData);
+        }
     }
 }

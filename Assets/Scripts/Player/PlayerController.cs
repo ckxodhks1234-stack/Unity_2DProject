@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
     private InventoryShop invenShop;
 
+    public int GetDrillDamage() => drillDamage;
+    public float GetMoveSpeed() => moveSpeed;
     private void Awake()
     {
         if (invenShop == null)
@@ -147,5 +149,20 @@ public class PlayerController : MonoBehaviour
         {
             invenShop.CloseAll();
         }
+    }
+
+    public void ApplyDrillStat(int amount)
+    {
+        drillDamage += amount;
+        drillDamage = Mathf.Max(0, drillDamage);
+    }
+
+    public void ApplySpeedStat(float speedAmount, float flyAmount)
+    {
+        moveSpeed += speedAmount;
+        flyForce += flyAmount;
+
+        moveSpeed = Mathf.Max(1f, moveSpeed);
+        flyForce = Mathf.Max(1f, flyForce);
     }
 }

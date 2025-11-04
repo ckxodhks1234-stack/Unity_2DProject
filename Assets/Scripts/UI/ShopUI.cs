@@ -57,7 +57,7 @@ public class ShopUI : MonoBehaviour
         //플레이어 돈 표시
         if(PlayerHP.instance != null && moneyText != null)
         {
-            moneyText.text = $"{PlayerHP.instance.money}G";
+            moneyText.text = $"You have {PlayerHP.instance.money}G";
         }
 
         //상점 아이템 슬롯 생성
