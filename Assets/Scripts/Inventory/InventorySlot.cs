@@ -1,23 +1,22 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Tilemaps;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image image;     //아이템이미지
-    public Button button;
-    public TextMeshProUGUI countText;   //아이템 수량 표시
-    private const int maxStack = 5; //최대 5개
+    [Header("슬롯 UI")]
+    public Image image;                   // 아이템 이미지
+    public TextMeshProUGUI countText;     // 아이템 수량 표시
+    [SerializeField] private Button button;
 
     private ItemInfo currentItem;
-
-    public Sprite icon;
+    private int currentAmount;
 
     void Start()
     {
         if (button != null)
         {
+            button.onClick.RemoveAllListeners();
             button.onClick.AddListener(ClickSlot);
         }
 
@@ -27,12 +26,14 @@ public class InventorySlot : MonoBehaviour
     //슬롯 가득찼는지 확인
     public bool IsFull(int count)
     {
-        return currentItem != null && count >= maxStack;
+        if (currentItem == null) return false;
+        return currentAmount >= currentItem.MaxStack;
     }
     //같은 아이템인지
     public bool IsSameItem(ItemInfo item)
     {
-        return currentItem != null && currentItem.itemName == item.itemName;
+        if (currentItem == null || item == null) return false;
+        return currentItem.itemName == item.itemName;
     }
     //슬롯 비어잉ㅆ는지
     public bool IsEmpty()
@@ -43,6 +44,8 @@ public class InventorySlot : MonoBehaviour
     public void ClearSlot()
     {
         currentItem = null;
+        currentAmount = 0;
+
         image.sprite = null;
         image.enabled = false;
         countText.text = "";
@@ -59,27 +62,18 @@ public class InventorySlot : MonoBehaviour
     }
 
     //아이템 정보, 수량 설정
-    public void SetItem(ItemInfo item, int count)
+    public void SetItem(ItemInfo item, int amount)
     {
         currentItem = item;
+        currentAmount = amount;
 
         if(item != null)
         {
-            //슬롯에 아이템이미지 가져오기
-            if (item.icon != null)
-            {
-                image.enabled = true;
-                image.sprite = item.icon;
-            }
-            else
-            {
-                //tile타입이 아니면
-                Debug.LogWarning($"[InventorySlot] {item.itemName}은 Tile 타입이 아니라 sprite를 가져올 수 없습니다.");
-                image.enabled=false;
-            }
+            image.sprite = item.itemSprite;   // ItemInfo에서 가져온 Sprite
+            image.enabled = true;
 
             //아이템 수량이 2부터 텍스트
-            countText.text = count > 1 ? count.ToString() : "";
+            countText.text = amount > 1 ? $"x{amount}" : "";
         }
         else
         {

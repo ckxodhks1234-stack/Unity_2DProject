@@ -6,6 +6,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private float O2Amount = 100f;
     [SerializeField] private float maxO2 = 100f;
     [SerializeField] private int fallY = -10;
+    [SerializeField] public int money = 0;
 
     private bool falled = false;
 
@@ -13,6 +14,15 @@ public class PlayerHP : MonoBehaviour
 
     private Map map;
 
+    public static PlayerHP instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
     private void Start()
     {
         startTime = Time.time;

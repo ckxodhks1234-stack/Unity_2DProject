@@ -29,6 +29,13 @@ public class PlayerController : MonoBehaviour
 
     private InventoryShop invenShop;
 
+    private void Awake()
+    {
+        if (invenShop == null)
+        {
+            invenShop = FindObjectOfType<InventoryShop>();
+        }
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();

@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class InventoryShop : MonoBehaviour
@@ -6,6 +7,7 @@ public class InventoryShop : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject shopUI;
+    [SerializeField] private TextMeshProUGUI moneyText; //ÇÃ·¹ÀÌ¾î µ· ±ÛÀÚ
 
     private bool isInventoryOpen = false;
     private bool isShopOpen = false;
@@ -55,6 +57,8 @@ public class InventoryShop : MonoBehaviour
         {
             InventoryUI.instance.UpdateUI();
         }
+
+        moneyText.text = $"You have {PlayerHP.instance.money}G";
     }
 
     public void CloseInventory()
@@ -79,9 +83,9 @@ public class InventoryShop : MonoBehaviour
     public void CloseAll()
     {
         isInventoryOpen = false;
-        inventoryUI.SetActive(false);
+        if(inventoryUI) inventoryUI.SetActive(false);
         isShopOpen = false;
-        shopUI.SetActive(false);
+        if(shopUI) shopUI.SetActive(false);
         Debug.Log("´Ù ´ÝÈû");
     }
 }

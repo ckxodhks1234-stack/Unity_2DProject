@@ -94,4 +94,20 @@ public class Inventory : MonoBehaviour
         }
         return total;
     }
+
+    //특정타입 아이템 가져오기
+    public List<ItemInfo> GetItemsType(ItemType type)
+    {
+        List<ItemInfo> result = new List<ItemInfo>();
+
+        foreach (var slot in slots)
+        {
+            if (slot.item != null && slot.item.itemType == type)
+            {
+                result.Add(slot.item);
+            }
+        }
+
+        return result;
+    }
 }

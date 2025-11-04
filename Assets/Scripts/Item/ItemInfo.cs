@@ -14,9 +14,8 @@ public class ItemInfo
     public ItemType itemType;
     public string itemName;
     public int sellPrice;
-    //public Sprite image;
-    public TileBase tile;
-    public Sprite icon;
+    public int buyPrice;
+    public Sprite itemSprite;
 
     [Header("소비")]
     public int healAmount;
@@ -27,6 +26,9 @@ public class ItemInfo
     public int damageUpAmount;
     public int maxO2UpAmount;
     public int flyForceUpAmount;
+
+    public Sprite icon => itemSprite;
+
 
     public void Use()
     {
@@ -46,23 +48,13 @@ public class ItemInfo
             }
         }
     }
-    public ItemInfo(string name, ItemType type, int price, TileBase itemTile = null)
+    public ItemInfo(string name, ItemType type, int sellPrice, int buyPrice, Sprite sprite)
     {
         itemName = name;
         itemType = type;
-        sellPrice = price;
-        tile = itemTile;
-        //tile에서 sprite추출하기
-        if(tile is Tile t && t.sprite != null)
-        {
-            this.icon = t.sprite;
-            Debug.Log($"[ItemInfo] {name} 아이콘 설정됨: {t.sprite.name}");
-        }
-        else
-        {
-            this.icon = null;
-            Debug.LogWarning($"[ItemInfo] {name} 아이콘 추출 실패 (tile: {tile})");
-        }
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
+        itemSprite = sprite;
     }
 
     //오버라이드하여 내용이 같은 아이템이면 같은키로 인식하기
@@ -84,57 +76,6 @@ public class ItemDataManager : MonoBehaviour
     private void Awake()
     {
         if (instance == null) instance = this;
-
-        InitItems();
-    }
-
-    private void InitItems()
-    {
-        //아이템 가격, 능력치 등
-        //==============기타 아이템=================
-        allItems.Add(new ItemInfo("동", ItemType.Guitar, 50));
-        allItems.Add(new ItemInfo("은", ItemType.Guitar, 100));
-        allItems.Add(new ItemInfo("금", ItemType.Guitar, 150));
-        allItems.Add(new ItemInfo("다이아", ItemType.Guitar, 200));
-        allItems.Add(new ItemInfo("자수정", ItemType.Guitar, 300));
-        allItems.Add(new ItemInfo("무지개", ItemType.Guitar, 500));
-        //==============소비 아이템=================
-        var box = new ItemInfo("구급상자", ItemType.Consum, 100);
-        box.healAmount = 50;
-        allItems.Add(box);
-
-        var capsule = new ItemInfo("산소캡슐", ItemType.Consum, 100);
-        capsule.O2UpAmount = 100;
-        allItems.Add(capsule);
-
-        var bomb = new ItemInfo("폭탄", ItemType.Consum, 100);
-        bomb.damageAmount = 100;
-        allItems.Add(bomb);
-        //==============장비 아이템=================
-        var drill1 = new ItemInfo("드릴1", ItemType.Equipment, 3000);
-        drill1.damageUpAmount = 10;
-        allItems.Add(drill1);
-        var drill2 = new ItemInfo("드릴2", ItemType.Equipment, 5000);
-        drill2.damageUpAmount = 20;
-        allItems.Add(drill2);
-
-        var helmet1 = new ItemInfo("헬멧1", ItemType.Equipment, 2000);
-        helmet1.maxO2UpAmount = 50;
-        allItems.Add(helmet1);
-        var helmet2 = new ItemInfo("헬멧2", ItemType.Equipment, 5000);
-        helmet2.maxO2UpAmount = 100;
-        allItems.Add(helmet2);
-
-        var shoes1 = new ItemInfo("신발1", ItemType.Equipment, 3000);
-        shoes1.flyForceUpAmount = 5;
-        allItems.Add(shoes1);
-        var shoes2 = new ItemInfo("신발2", ItemType.Equipment, 5000);
-        shoes2.flyForceUpAmount = 15;
-        allItems.Add(shoes2);
-    }
-
-    public ItemInfo FindItemName(string name)
-    {
-        return allItems.Find(x => x.itemName == name);
+        else Destroy(gameObject);
     }
 }
