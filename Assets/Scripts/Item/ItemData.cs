@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-
 
 public class ItemData : MonoBehaviour
 {
@@ -53,19 +51,30 @@ public class ItemData : MonoBehaviour
         allItems.Add(bomb);
 
         //=====================¿Â∫Ò===========================
-        var drill1 = new ItemInfo("µÂ∏±1", ItemType.Equipment, 2000, 3000, drill1Sprite, EquipType.Drill);
+        var drill1 = new ItemInfo("RDrill", ItemType.Equipment, 2000, 3000, drill1Sprite, EquipType.Drill);
+        drill1.damageUpAmount = 20;
         allItems.Add(drill1);
-        var drill2 = new ItemInfo("µÂ∏±2", ItemType.Equipment, 5000, 7000, drill2Sprite, EquipType.Drill);
+
+        var drill2 = new ItemInfo("BDrill", ItemType.Equipment, 5000, 7000, drill2Sprite, EquipType.Drill);
+        drill2.damageUpAmount = 40;
         allItems.Add(drill2);
 
-        var helmet1 = new ItemInfo("«Ô∏‰1", ItemType.Equipment, 2000, 3000, helmet1Sprite, EquipType.Helmet);
+        var helmet1 = new ItemInfo("YHelmet", ItemType.Equipment, 2000, 3000, helmet1Sprite, EquipType.Helmet);
+        helmet1.maxO2UpAmount = 50;
         allItems.Add(helmet1);
-        var helmet2 = new ItemInfo("«Ô∏‰2", ItemType.Equipment, 5000, 7000, helmet1Sprite, EquipType.Helmet);
+
+        var helmet2 = new ItemInfo("RHelmet", ItemType.Equipment, 5000, 7000, helmet1Sprite, EquipType.Helmet);
+        helmet2.maxO2UpAmount = 100;
         allItems.Add(helmet2);
 
-        var shoes1 = new ItemInfo("Ω≈πﬂ1", ItemType.Equipment, 2000, 3000, shoes1Sprite, EquipType.Shoes);
-        allItems.Add(shoes1);                                      
-        var shoes2 = new ItemInfo("Ω≈πﬂ2", ItemType.Equipment, 5000, 7000, shoes2Sprite, EquipType.Shoes);
+        var shoes1 = new ItemInfo("YShoes", ItemType.Equipment, 2000, 3000, shoes1Sprite, EquipType.Shoes);
+        shoes1.speedUpAmount = 2;
+        shoes1.flyUpAmount = 2;
+        allItems.Add(shoes1);        
+        
+        var shoes2 = new ItemInfo("RShoes", ItemType.Equipment, 5000, 7000, shoes2Sprite, EquipType.Shoes);
+        shoes2.speedUpAmount = 5;
+        shoes2.flyUpAmount = 5;
         allItems.Add(shoes2);
     }
 

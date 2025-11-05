@@ -1,16 +1,20 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("슬롯 UI")]
-    public Image image;                   // 아이템 이미지
-    public TextMeshProUGUI countText;     // 아이템 수량 표시
+    public Image image;
+    public TextMeshProUGUI countText;
     [SerializeField] private Button button;
 
     private ItemInfo currentItem;
     private int currentAmount;
+
+    //마우스 올라왔는지
+    private bool isHovered = false;
 
     void Start()
     {
@@ -23,31 +27,36 @@ public class InventorySlot : MonoBehaviour
         ClearSlot();
     }
 
-    private void Update()
+    public void OnPointerClick(PointerEventData eventData)
     {
         if (currentItem == null) return;
 
-        //우클릭 시 장착
-        if (Input.GetMouseButtonDown(1))
+        //우클릭은 장착
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (EquipManager.instance == null)
-            {
-                Debug.LogError("EquipManager가 아직 준비되지 않았습니다!");
-                return;
-            }
             TryEquipItem();
+        }
+        //좌클릭은 기존 ClickSlot() 동작
+        else if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            ClickSlot();
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        isHovered = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        isHovered = false;
+    }
     private void TryEquipItem()
     {
-        Debug.Log($"[DEBUG] EquipManager.instance = {EquipManager.instance}");
-        Debug.Log($"[DEBUG] Inventory.instance = {Inventory.instance}");
-        Debug.Log($"[DEBUG] currentItem = {currentItem?.itemName}");
-
         if (EquipManager.instance == null)
         {
-            Debug.LogError("EquipManager가 씬에 없습니다");
+            Debug.LogError("EquipManager가 Scene에 없습니다");
             return;
         }
         if (currentItem == null)
@@ -60,13 +69,28 @@ public class InventorySlot : MonoBehaviour
         if (currentItem.itemType != ItemType.Equipment)
             return;
 
-        //장비창에 착용
-        EquipManager.instance.EquipItem(currentItem);
+        // 장비 아이템일 때만 ItemData에서 가져오기
+        ItemInfo itemFromData = ItemData.instance?.FindItemName(currentItem.itemName);
+        if (itemFromData == null)
+        {
+            Debug.LogWarning($"ItemData에서 {currentItem.itemName} 아이템을 찾을 수 없음");
+            return;
+        }
 
-        //인벤토리에서 제거
-        Inventory.instance.RemoveItem(currentItem, 1);
+        bool equipped = EquipManager.instance.EquipItem(itemFromData);
 
-        Debug.Log($"{currentItem.itemName} 장착");
+        if (equipped)
+        {
+            //인벤토리에서 제거
+            Inventory.instance?.RemoveItem(currentItem, 1);
+
+            //슬롯 초기화
+            ClearSlot();
+        }
+        else
+        {
+            Debug.LogWarning($"{itemFromData.itemName} 장착 실패.");
+        }
     }
 
     //슬롯 가득찼는지 확인

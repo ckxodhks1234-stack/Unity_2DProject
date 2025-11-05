@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.EventSystems;
 
 public class EquipSlot : MonoBehaviour
 {
@@ -15,8 +15,8 @@ public class EquipSlot : MonoBehaviour
     public void SetItem(ItemInfo item)
     {
         equippedItem = item;
-        icon.sprite = item.itemSprite;
-        icon.enabled = true;
+        icon.sprite = item?.itemSprite;
+        icon.enabled = item != null;
     }
 
     public void ClearSlot()
@@ -26,26 +26,36 @@ public class EquipSlot : MonoBehaviour
         icon.enabled = false;
     }
 
-    private void Update()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        //우클릭으로 장비 해제
-        if (equippedItem != null && Input.GetMouseButtonDown(1))
+        // 우클릭 감지
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
-            Inventory.instance.AddItem(equippedItem, 1);
-            EquipManager.instance.NoEquipItem(equippedItem);
-            ClearSlot();
+            TryNoEquip();
         }
     }
 
-    private void NoEquip()
+    private void TryNoEquip()
     {
-        //인벤토리로 되돌리기
-        Inventory.instance.AddItem(equippedItem, 1);
-        //플레이어 능력치 원상복귀
-        EquipManager.instance.NoEquipItem(equippedItem);
+        if (equippedItem == null)
+            return;
 
+        //인벤토리에 되돌리기
+        if (Inventory.instance != null)
+        {
+            Inventory.instance.AddItem(equippedItem, 1);
+            Debug.Log($"{equippedItem.itemName} 인벤토리로 되돌림");
+        }
+
+        //능력치 원복
+        EquipManager.instance?.NoEquipItem(equippedItem);
+
+        //슬롯 비우기
         ClearSlot();
+
         //UI 갱신
-        EquipUI.instance.UpdateStatUI();
+        EquipUI.instance?.UpdateStatUI();
+
+        Debug.Log($"{equippedItem.itemName} 장비 해제 완료!");
     }
 }

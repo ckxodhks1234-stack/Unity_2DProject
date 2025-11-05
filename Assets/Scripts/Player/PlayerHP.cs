@@ -96,7 +96,6 @@ public class PlayerHP : MonoBehaviour
     public void ApplyO2Stat(float amount)
     {
         maxO2 += amount;
-        if (O2Amount > maxO2)
-            O2Amount = maxO2;
+        O2Amount = Mathf.Min(O2Amount, maxO2);
     }
 }

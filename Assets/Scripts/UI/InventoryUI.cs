@@ -21,11 +21,20 @@ public class InventoryUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        UpdateUI();
+        if (Inventory.instance != null)
+            UpdateUI();
+        else
+            Debug.LogWarning("Inventory.instance가 아직 생성되지 않아 UI 업데이트를 건너뜁니다.");
     }
 
     public void UpdateUI()
     {
+        if (Inventory.instance == null)
+        {
+            Debug.LogWarning("Inventory.instance가 없어서 UpdateUI를 실행할 수 없습니다.");
+            return;
+        }
+
         var inventorySlots = Inventory.instance.slots;
 
         int i = 0;
