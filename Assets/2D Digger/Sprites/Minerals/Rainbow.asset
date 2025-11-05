@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: "\uBB34\uC9C0\uAC1C"
+  m_Name: Rainbow
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 68a4be505db7f5242b1ea1dc2547f68e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

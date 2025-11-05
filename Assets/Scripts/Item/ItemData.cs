@@ -33,21 +33,21 @@ public class ItemData : MonoBehaviour
         instance = this;
 
         //=====================기타===========================
-        allItems.Add(new ItemInfo("동", ItemType.Guitar, 50, 0, copperSprite));
-        allItems.Add(new ItemInfo("은", ItemType.Guitar, 100, 0, silverSprite));
-        allItems.Add(new ItemInfo("금", ItemType.Guitar, 150, 0, goldSprite));
-        allItems.Add(new ItemInfo("다이아", ItemType.Guitar, 200, 0, diamondSprite));
-        allItems.Add(new ItemInfo("자수정", ItemType.Guitar, 300, 0, amethystSprite));
-        allItems.Add(new ItemInfo("무지개", ItemType.Guitar, 500, 0, rainbowSprite));
+        allItems.Add(new ItemInfo("Copper", ItemType.Guitar, 50, 0, copperSprite));
+        allItems.Add(new ItemInfo("Silver", ItemType.Guitar, 100, 0, silverSprite));
+        allItems.Add(new ItemInfo("Gold", ItemType.Guitar, 150, 0, goldSprite));
+        allItems.Add(new ItemInfo("Diamond", ItemType.Guitar, 200, 0, diamondSprite));
+        allItems.Add(new ItemInfo("Amethyst", ItemType.Guitar, 300, 0, amethystSprite));
+        allItems.Add(new ItemInfo("Rainbow", ItemType.Guitar, 500, 0, rainbowSprite));
 
         //=====================소비===========================
-        var box = new ItemInfo("구급상자", ItemType.Consum, 200, 500, boxSprite);
+        var box = new ItemInfo("Box", ItemType.Consum, 200, 500, boxSprite);
         allItems.Add(box);
 
-        var capsule = new ItemInfo("산소캡슐", ItemType.Consum, 200, 500, capsuleSprite);
+        var capsule = new ItemInfo("Capsule", ItemType.Consum, 200, 500, capsuleSprite);
         allItems.Add(capsule);
 
-        var bomb = new ItemInfo("폭탄", ItemType.Consum, 50, 100, bombSprite);
+        var bomb = new ItemInfo("Bomb", ItemType.Consum, 50, 100, bombSprite);
         allItems.Add(bomb);
 
         //=====================장비===========================

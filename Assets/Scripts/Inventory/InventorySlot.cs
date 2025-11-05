@@ -45,13 +45,43 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        isHovered = true;
+        if (currentItem != null)
+        {
+            ToolTip.instance?.ShowToolTip(GetItemDescription(currentItem));
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        isHovered = false;
+        ToolTip.instance?.HideToolTip();
     }
+
+    private string GetItemDescription(ItemInfo item)
+    {
+        string desc = $"{item.itemName}\n";
+
+        switch (item.itemType)
+        {
+            case ItemType.Guitar:
+                desc += $"Price : {item.sellPrice}\n";
+                break;
+
+            case ItemType.Consum:
+                if (item.healAmount > 0) desc += $"HP Up : {item.healAmount}\n";
+                if (item.O2UpAmount > 0) desc += $"O2 Up : {item.O2UpAmount}\n";
+                break;
+
+            case ItemType.Equipment:
+                if (item.damageUpAmount > 0) desc += $"Damage +{item.damageUpAmount}\n";
+                if (item.maxO2UpAmount > 0) desc += $"MaxO2 +{item.maxO2UpAmount}\n";
+                if (item.speedUpAmount > 0) desc += $"Speed +{item.speedUpAmount}\n";
+                if (item.flyUpAmount > 0) desc += $"FlyForce +{item.flyUpAmount}\n";
+                break;
+        }
+
+        return desc;
+    }
+
     private void TryEquipItem()
     {
         if (EquipManager.instance == null)
@@ -69,7 +99,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         if (currentItem.itemType != ItemType.Equipment)
             return;
 
-        ItemInfo itemFromData = ItemData.instance?.FindItemName(currentItem.itemName);
+        var itemFromData = ItemData.instance?.FindItemName(currentItem.itemName);
         if (itemFromData == null) return;
 
         //EquipManager에게 장착 요청(기존 장비 반환)
@@ -137,6 +167,10 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     //아이템 정보, 수량 설정
     public void SetItem(ItemInfo item, int amount)
     {
+        //아이템 변경이 없으면 갱신하지 않음(깜빡임 방지)
+        if (currentItem == item && currentAmount == amount)
+            return;
+
         currentItem = item;
         currentAmount = amount;
 

@@ -20,6 +20,9 @@ public class PlayerHP : MonoBehaviour
     private PlayerController playerController;
 
     public float GetMaxO2() => maxO2;
+    public float GetO2Amount() => O2Amount;
+    public int GetHealth() => health;
+    public int GetMaxHealth() => 100;
 
     private void Awake()
     {
@@ -106,5 +109,15 @@ public class PlayerHP : MonoBehaviour
     {
         maxO2 += amount;
         O2Amount = Mathf.Min(O2Amount, maxO2);
+    }
+
+    public void ApplyHeal(int amount)
+    {
+        if (amount <= 0) return;
+
+        health += amount;
+        health = Mathf.Clamp(health, 0, GetMaxHealth()); // 0~최대 체력 사이로 제한
+
+        Debug.Log($"HP 회복 : {amount}, 현재 HP : {health}");
     }
 }

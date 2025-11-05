@@ -121,4 +121,18 @@ public class Inventory : MonoBehaviour
 
         return result;
     }
+
+    //아이템 보유 여부 확인
+    public bool HasItem(ItemInfo item, int amount = 1)
+    {
+        if (item == null) return false;
+
+        int total = 0;
+        foreach (var slot in slots)
+        {
+            if (slot.item.itemName == item.itemName)
+                total += slot.count;
+        }
+        return total >= amount;
+    }
 }

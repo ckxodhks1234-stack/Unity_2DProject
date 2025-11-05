@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class InventoryUI : MonoBehaviour
 
     private List<InventorySlot> slots = new List<InventorySlot>();
 
+    public ItemInfo item;
     private void Awake()
     {
         instance = this;
