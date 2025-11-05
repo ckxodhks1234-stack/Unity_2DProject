@@ -40983,11 +40983,14 @@ MonoBehaviour:
   drillDamage: 20
   drillRange: 1
   drillDelay: 0.2
+  flyAcceleration: 10
+  flyMaxSpeed: 5
   groundCheck: {fileID: 977939136}
   groundCheckRadius: 0.2
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  isGrounded: 0
 --- !u!95 &1392218706
 Animator:
   serializedVersion: 5
@@ -67576,7 +67579,7 @@ MonoBehaviour:
   botMineralTiles:
   - {fileID: 11400000, guid: f1fc725e0d701ff439c4ec472ba0a36a, type: 2}
   - {fileID: 11400000, guid: e66de31baf1c94c4d886897a0a8c7e60, type: 2}
-  mineralChance: 1
+  mineralChance: 0.03
   baseHp: 100
   upHp: 100
   baseTakeO2: 1

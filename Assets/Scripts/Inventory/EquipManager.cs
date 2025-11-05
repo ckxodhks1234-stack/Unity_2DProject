@@ -35,10 +35,10 @@ public class EquipManager : MonoBehaviour
         if (hp == null) Debug.LogWarning("EquipManager: PlayerHP를 찾을 수 없습니다!");
     }
 
-    public bool EquipItem(ItemInfo item)
+    public ItemInfo EquipItem(ItemInfo item)
     {
         if (item == null || item.itemType != ItemType.Equipment)
-            return false;
+            return null;
 
         EquipSlot targetSlot = null;
 
@@ -53,30 +53,26 @@ public class EquipManager : MonoBehaviour
             case EquipType.Shoes:
                 targetSlot = shoesSlot;
                 break;
-            default:
-                Debug.LogWarning($"EquipManager: {item.itemName}아이템타입이 안맞음");
-                return false;
         }
         if(targetSlot == null)
         {
             Debug.LogWarning($"EquipManager: 슬롯이 없음 ({item.itemName})");
-            return false;
+            return null;
         }
 
-        if (targetSlot.equippedItem != null)
+        //기존 장비,능력치 반환
+        ItemInfo oldItem = targetSlot.equippedItem;
+        if (oldItem != null)
         {
-            //기존 장비 해제 후 교체
-            NoEquipItem(targetSlot.equippedItem);
-
-            Inventory.instance.AddItem(targetSlot.equippedItem, 1);
+            RemoveEquipStats(oldItem);
         }
 
-        targetSlot.SetItem(item);   //슬롯에 장착
-        Debug.Log($"{item.itemName} 장착됨, 아이콘={item.itemSprite}");
-        ApplyEquipStats(item);  //능력치 적용
-
+        //슬롯에 새 장비 장착
+        targetSlot.SetItem(item);
+        ApplyEquipStats(item);
         EquipUI.instance?.UpdateStatUI();
-        return true;
+
+        return oldItem;
     }
 
     public void NoEquipItem(ItemInfo item)

@@ -1,4 +1,4 @@
-using UnityEngine;
+ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,12 +8,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int drillDamage = 25;
     [SerializeField] private float drillRange = 1.0f;
     [SerializeField] private float drillDelay = 0.2f;
+    [SerializeField] private float flyAcceleration = 1f; //속도 증가율
+    [SerializeField] private float flyMaxSpeed = 5f;      //최대 상승 속도
 
     [Header("바닥 체크")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.1f;
     [SerializeField] LayerMask groundLayer;
-    private bool isGrounded;
+    public bool isGrounded;
 
     private float inputX;
     private float inputY;
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour
 
     public int GetDrillDamage() => drillDamage;
     public float GetMoveSpeed() => moveSpeed;
+    public bool GetIsGrounded() => isGrounded;
     private void Awake()
     {
         if (invenShop == null)
@@ -96,11 +99,22 @@ public class PlayerController : MonoBehaviour
 
     private void Fly()
     {
-        if (inputY > 0)
+        if (inputY > 0f)
         {
-            rb.velocity = new Vector2(rb.velocity.x, inputY * flyForce);
+            float targetSpeed = flyMaxSpeed;
+
+            //현재 속도보다 작으면 가속
+            if (rb.velocity.y < targetSpeed)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + flyAcceleration);
+
+                //최대 속도 제한
+                if (rb.velocity.y > targetSpeed)
+                    rb.velocity = new Vector2(rb.velocity.x, targetSpeed);
+            }
         }
     }
+    
 
     private void Drill()
     {

@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EquipSlot : MonoBehaviour
+public class EquipSlot : MonoBehaviour, IPointerClickHandler
 {
     public Image icon;
 
     public ItemInfo equippedItem;
+
     void Start()
     {
         ClearSlot();
@@ -40,22 +41,15 @@ public class EquipSlot : MonoBehaviour
         if (equippedItem == null)
             return;
 
-        //인벤토리에 되돌리기
-        if (Inventory.instance != null)
-        {
-            Inventory.instance.AddItem(equippedItem, 1);
-            Debug.Log($"{equippedItem.itemName} 인벤토리로 되돌림");
-        }
-
-        //능력치 원복
+        //능력치 복구
         EquipManager.instance?.NoEquipItem(equippedItem);
-
+        //인벤토리에 추가
+        Inventory.instance?.AddItem(equippedItem, 1);
         //슬롯 비우기
         ClearSlot();
 
-        //UI 갱신
+        InventoryUI.instance?.UpdateUI();
         EquipUI.instance?.UpdateStatUI();
-
-        Debug.Log($"{equippedItem.itemName} 장비 해제 완료!");
+        //Debug.Log($"{equippedItem.itemName} 장비 해제 완료!");
     }
 }

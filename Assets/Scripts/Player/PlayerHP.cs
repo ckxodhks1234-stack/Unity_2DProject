@@ -9,12 +9,15 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] public int money = 0;
 
     private bool falled = false;
+    private float fallStartY = 0f;
 
     private float startTime;
 
     private Map map;
 
     public static PlayerHP instance;
+    private Rigidbody2D rb;
+    private PlayerController playerController;
 
     public float GetMaxO2() => maxO2;
 
@@ -29,6 +32,8 @@ public class PlayerHP : MonoBehaviour
     {
         startTime = Time.time;
         map = FindObjectOfType<Map>();
+        rb = GetComponent<Rigidbody2D>();
+        playerController = GetComponent<PlayerController>();
     }
     void Update()
     {
@@ -42,16 +47,20 @@ public class PlayerHP : MonoBehaviour
     //낙사판정
     private void Fall()
     {
-        //10이상 떨어지면 체력닳기
-        if (!falled && transform.position.y < fallY)
+        if(!falled && rb.velocity.y < 0f)
         {
-            health -= 20;
             falled = true;
+            fallStartY = transform.position.y;
         }
 
-        //한번 떨어지고 나서 낙사판정 초기화하기
-        if(falled && transform.position.y > fallY)
+        if(falled && playerController.GetIsGrounded())
         {
+            float fallDistance = fallStartY - transform.position.y;
+            //10이상 떨어지면 체력닳기
+            if (fallDistance > Mathf.Abs(fallY))
+            {
+                health -= 20;
+            }
             falled = false;
         }
     }
@@ -62,7 +71,7 @@ public class PlayerHP : MonoBehaviour
         float takeO2 = map.TakeO2(transform.position.y);
 
         //땅 위에서는 산소 회복
-        if (transform.position.y >= 0)
+        if (transform.position.y >= 0f)
         {
             if (O2Amount < maxO2)
             {
@@ -76,7 +85,7 @@ public class PlayerHP : MonoBehaviour
         }
 
         //maxO2 ~ 0사이로 제한하기
-        O2Amount = Mathf.Max(O2Amount, 0, maxO2);
+        O2Amount = Mathf.Clamp(O2Amount, 0, maxO2);
 
         //산소 없으면 체력감소
         if(O2Amount <= 0)

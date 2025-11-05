@@ -69,28 +69,22 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         if (currentItem.itemType != ItemType.Equipment)
             return;
 
-        // 장비 아이템일 때만 ItemData에서 가져오기
         ItemInfo itemFromData = ItemData.instance?.FindItemName(currentItem.itemName);
-        if (itemFromData == null)
+        if (itemFromData == null) return;
+
+        //EquipManager에게 장착 요청(기존 장비 반환)
+        ItemInfo oldItem = EquipManager.instance.EquipItem(itemFromData);
+
+        //기존 장비가 있으면 인벤토리에 바로 추가, UI갱신
+        if (oldItem != null)
         {
-            Debug.LogWarning($"ItemData에서 {currentItem.itemName} 아이템을 찾을 수 없음");
-            return;
+            Inventory.instance.AddItem(oldItem, 1);
         }
 
-        bool equipped = EquipManager.instance.EquipItem(itemFromData);
-
-        if (equipped)
-        {
-            //인벤토리에서 제거
-            Inventory.instance?.RemoveItem(currentItem, 1);
-
-            //슬롯 초기화
-            ClearSlot();
-        }
-        else
-        {
-            Debug.LogWarning($"{itemFromData.itemName} 장착 실패.");
-        }
+        //슬롯에서 제거
+        Inventory.instance.RemoveItem(currentItem, 1);
+        ClearSlot();
+        InventoryUI.instance?.UpdateUI();
     }
 
     //슬롯 가득찼는지 확인

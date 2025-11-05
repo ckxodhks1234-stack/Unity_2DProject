@@ -132,7 +132,7 @@ public class Map : MonoBehaviour
 
         if (depth > 0 && depth <= 24)
         {
-            tiles.AddRange(botMineralTiles);
+            tiles.AddRange(topMineralTiles);
         }
         //미드 광물이 더 많이 나오게 2번
         else if (depth > 24 && depth <= 58)
