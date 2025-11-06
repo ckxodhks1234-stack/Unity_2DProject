@@ -20,6 +20,12 @@ public class ShopUI : MonoBehaviour
     private ItemInfo targetItem;
     private ConfirmType currentConfirmType;
 
+    [SerializeField] private Button saveButton;
+    [SerializeField] private Map map;
+
+    [SerializeField] private GameObject saveMessagePanel;
+    [SerializeField] private TextMeshProUGUI saveMessageText;
+
     private enum ConfirmType { Buy, Sell, SellAllMineral }
 
     private void Awake()
@@ -44,6 +50,12 @@ public class ShopUI : MonoBehaviour
     private void Start()
     {
         sellAllMinerals.onClick.AddListener(OnClickSellAllMineralsButton);
+
+        Map map = FindObjectOfType<Map>();
+        if (map != null && MapSave.instance != null)
+        {
+            MapSave.instance.LoadMap(map);
+        }
     }
 
     public void OnClickSellAllMineralsButton()
@@ -150,5 +162,70 @@ public class ShopUI : MonoBehaviour
     {
         confirmPanel.SetActive(false);
         targetItem = null;
+    }
+
+    public void OnSaveButtonClicked()
+    {
+        bool success = true;
+
+        //1. 아이템 저장
+        if (DataSave.instance != null)
+        {
+            try
+            {
+                DataSave.instance.SaveItems();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("[Save] 아이템 저장 실패: " + e.Message);
+                success = false;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[Save] DataSave 인스턴스 없음");
+            success = false;
+        }
+
+        //2. 맵 저장
+        if (MapSave.instance != null && map != null)
+        {
+            try
+            {
+                MapSave.instance.SaveMap(map);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError("[Save] 맵 저장 실패: " + e.Message);
+                success = false;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[Save] MapSave 또는 Map 인스턴스 없음");
+            success = false;
+        }
+
+        //3. 결과 메시지 표시
+        if (saveMessagePanel != null && saveMessageText != null)
+        {
+            saveMessageText.text = success ? "Game Save Complete!" : "Can't Save";
+            saveMessagePanel.SetActive(true);
+
+            //2초 후 자동으로 닫기
+            Invoke(nameof(HideSaveMessage), 2f);
+        }
+
+        //4. 콘솔 창
+        if (success)
+            Debug.Log("[Save] 모든 저장 완료!");
+        else
+            Debug.LogWarning("[Save] 일부 저장 실패");
+    }
+
+    private void HideSaveMessage()
+    {
+        if (saveMessagePanel != null)
+            saveMessagePanel.SetActive(false);
     }
 }

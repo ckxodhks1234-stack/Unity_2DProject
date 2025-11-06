@@ -5,7 +5,7 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private int health = 100;
     [SerializeField] private float O2Amount = 100f;
     [SerializeField] private float maxO2 = 100f;
-    [SerializeField] private int fallY = -10;
+    [SerializeField] private int fallY = -5;
     [SerializeField] public int money = 0;
 
     private bool falled = false;
@@ -24,6 +24,7 @@ public class PlayerHP : MonoBehaviour
     public int GetHealth() => health;
     public int GetMaxHealth() => 100;
 
+    private GameOverUI gameOverUI;
     private void Awake()
     {
         if (instance == null)
@@ -37,6 +38,7 @@ public class PlayerHP : MonoBehaviour
         map = FindObjectOfType<Map>();
         rb = GetComponent<Rigidbody2D>();
         playerController = GetComponent<PlayerController>();
+        gameOverUI = FindObjectOfType<GameOverUI>();
     }
     void Update()
     {
@@ -102,6 +104,11 @@ public class PlayerHP : MonoBehaviour
         if (health <= 0)
         {
             gameObject.SetActive(false);
+
+            if (gameOverUI != null)
+            {
+                gameOverUI.Show();
+            }
         }
     }
 
@@ -111,10 +118,14 @@ public class PlayerHP : MonoBehaviour
         O2Amount = Mathf.Min(O2Amount, maxO2);
     }
 
+    public void ApplyO2Up(float amount)
+    {
+        O2Amount += amount;
+        O2Amount = Mathf.Clamp(O2Amount, 0, maxO2); // 0~maxO2 사이로 제한
+    }
+
     public void ApplyHeal(int amount)
     {
-        if (amount <= 0) return;
-
         health += amount;
         health = Mathf.Clamp(health, 0, GetMaxHealth()); // 0~최대 체력 사이로 제한
 

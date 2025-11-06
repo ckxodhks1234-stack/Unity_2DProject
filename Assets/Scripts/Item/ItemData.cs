@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ItemData : MonoBehaviour
 {
     public static ItemData instance;
@@ -30,7 +31,10 @@ public class ItemData : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if(instance == null)
+        {
+            instance = this;
+        }
 
         //=====================기타===========================
         allItems.Add(new ItemInfo("Copper", ItemType.Guitar, 50, 0, copperSprite));
@@ -83,7 +87,7 @@ public class ItemData : MonoBehaviour
     {
         foreach (var item in allItems)
         {
-            if( item.itemName == name)
+            if(item.itemName == name)
                 return item;
         }
         Debug.LogWarning($"[ItemData] {name}아이템 못찾음");

@@ -27,13 +27,25 @@ public class TopUI : MonoBehaviour
         UpdateUI();
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
+        if (ItemData.instance == null || inventory == null) return;
+
         foreach (var ui in itemUIs)
         {
-            var item = ItemData.instance.FindItemName(ui.itemName);
-            int count = inventory.GetItemCount(item);
-            ui.countText.text = count.ToString();
+            if (ui == null || ui.countText == null) continue;
+
+            ItemInfo item = ItemData.instance.FindItemName(ui.itemName);
+
+            if (item != null)
+            {
+                int count = inventory.GetItemCount(item);
+                ui.countText.text = count.ToString();
+            }
+            else
+            {
+                ui.countText.text = "0";
+            }
         }
     }
 }

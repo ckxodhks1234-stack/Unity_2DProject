@@ -25,6 +25,13 @@ public class ShopManager : MonoBehaviour
         int playerMoney = PlayerHP.instance.money;
         int price = item.buyPrice;
 
+        //인벤토리 공간 확인
+        if(!Inventory.instance.HasSpaceFor(item))
+        {
+            Debug.Log("인벤토리 공간 부족");
+            return false;
+        }
+
         if (playerMoney >= price)
         {
             PlayerHP.instance.money -= price;

@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private InventoryShop invenShop;
 
+    public GameObject bombPrefab;
     public int GetDrillDamage() => drillDamage;
     public float GetMoveSpeed() => moveSpeed;
     public bool GetIsGrounded() => isGrounded;
@@ -57,6 +58,15 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             isDrillingInput = (inputY < 0 || inputX != 0) && (Time.time - lastDrillTime >= drillDelay);
+        }
+
+        //ZÅ° ´©¸£¸é ÆøÅº ¼³Ä¡
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (bombPrefab == null) return;
+
+            //ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ ÆøÅº »ý¼º
+            Instantiate(bombPrefab, transform.position, Quaternion.identity);
         }
     }
 

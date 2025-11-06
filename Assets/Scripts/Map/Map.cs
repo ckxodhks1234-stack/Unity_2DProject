@@ -33,13 +33,17 @@ public class Map : MonoBehaviour
     public TileBase crack4;
 
     //타일별 HP 설정하기 위한 딕셔너리
-    private Dictionary<Vector3Int, int> tileHp = new Dictionary<Vector3Int, int>();
+    public Dictionary<Vector3Int, int> tileHp = new Dictionary<Vector3Int, int>();
     //광물 타일 구별하기 위한 클래스가져오기
     public Dictionary<Vector3Int, TileData> groundData = new Dictionary<Vector3Int, TileData>();
 
     void Start()
     {
-        StartTileHP();
+        if (!SaveLoadFlag.ShouldLoadGame)
+        { 
+             StartTileHP();
+        }
+
     }
 
     void StartTileHP()
@@ -84,12 +88,17 @@ public class Map : MonoBehaviour
             {
                 //깊이에 따라서 광물 나오기(아래 함수에 있음)
                 Tile mineralTile = RandomMineralDepth(depth);
+
                 if (mineralTile != null)
                 {
                     groundTile.SetTile(pos, mineralTile);
+                    ItemInfo item = null;
 
                     //광물 아이템 찾기
-                    ItemInfo item = ItemData.instance.FindItemName(mineralTile.name);
+                    if (ItemData.instance != null)
+                    {
+                        item = ItemData.instance.FindItemName(mineralTile.name);
+                    }
                     if(item != null)
                     {
                         MineralTile(pos, true, item, hp);

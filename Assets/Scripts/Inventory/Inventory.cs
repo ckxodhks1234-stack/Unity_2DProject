@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -29,11 +30,6 @@ public class Inventory : MonoBehaviour
 
         public InventorySlotData(ItemInfo item, int count)
         {
-            if (item == null)
-            {
-                Debug.LogError("InventorySlotData 생성 시 item이 null");
-                return;
-            }
             this.item = item;
             this.count = count;
 
@@ -134,5 +130,30 @@ public class Inventory : MonoBehaviour
                 total += slot.count;
         }
         return total >= amount;
+    }
+
+    //빈 슬롯 확인
+    public bool HasSpaceFor(ItemInfo item, int amount = 1)
+    {
+        if (item == null) return false;
+        int remaining = amount;
+        //기존 슬롯에 쌓을 공간 확인
+        foreach (var slot in slots)
+        {
+            if (slot.item.itemName == item.itemName && slot.count < item.MaxStack)
+            {
+                remaining -= (item.MaxStack - slot.count);
+                if (remaining <= 0) return true;
+            }
+        }
+        //새 슬롯에 넣을 공간 확인
+        int freeSlots = capacity - slots.Count;
+        while (remaining > 0 && freeSlots > 0)
+        {
+            remaining -= item.MaxStack;
+            freeSlots--;
+        }
+
+        return remaining <= 0;
     }
 }
