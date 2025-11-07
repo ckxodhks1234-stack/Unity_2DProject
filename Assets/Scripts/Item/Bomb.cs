@@ -8,12 +8,16 @@ public class Bomb : MonoBehaviour
     private Animator anim;
     private bool exploded = false;
 
+    public AudioClip explosionSound;
+    private AudioSource audioSource;
+
     void Start()
     {
         //1초 뒤 폭발
         Invoke(nameof(Explosion), fuseTime);
 
         anim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Explosion()
@@ -22,6 +26,7 @@ public class Bomb : MonoBehaviour
         exploded = true;
 
         anim.SetTrigger("Explode"); //폭발 애니메이션 재생
+        audioSource.PlayOneShot(explosionSound); //폭발음 재생
 
         //폭발 범위 내의 적들에게 데미지 적용
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.5f);

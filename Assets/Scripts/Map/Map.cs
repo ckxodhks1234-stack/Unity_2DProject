@@ -32,6 +32,10 @@ public class Map : MonoBehaviour
     public TileBase crack3;
     public TileBase crack4;
 
+    [SerializeField] private Transform player;
+    [SerializeField] private int viewDistance = 20;
+    private Dictionary<Vector3Int, TileObject> activeTiles = new Dictionary<Vector3Int, TileObject>();
+
     //타일별 HP 설정하기 위한 딕셔너리
     public Dictionary<Vector3Int, int> tileHp = new Dictionary<Vector3Int, int>();
     //광물 타일 구별하기 위한 클래스가져오기
@@ -46,6 +50,58 @@ public class Map : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        UpdateVisibleTiles();
+    }
+
+    //성능 향상을 위해 보이는 타일만 활성화
+    private void UpdateVisibleTiles()
+    {
+        if (player == null) return;
+        Vector3Int playerPos = groundTile.WorldToCell(player.position);
+
+        //시야 범위 계산
+        for (int x = playerPos.x - viewDistance; x <= playerPos.x + viewDistance; x++)
+        {
+            for (int y = playerPos.y - viewDistance; y <= playerPos.y + viewDistance; y++)
+            {
+                Vector3Int pos = new Vector3Int(x, y, 0);
+
+                //현재 Tilemap에 타일이 존재하는지
+                TileBase tile = groundTile.GetTile(pos);
+                if (tile == null) continue;
+
+                if (!activeTiles.ContainsKey(pos))
+                {
+                    //새 타일 오브젝트 꺼내기
+                    var obj = TilePool.instance.GetTile();
+                    obj.Setup(groundData.ContainsKey(pos) ? groundData[pos] : null,
+                              (tile as Tile).sprite,
+                              groundTile.CellToWorld(pos) + new Vector3(0.5f, 0.5f, 0));
+                    activeTiles[pos] = obj;
+                }
+            }
+        }
+
+        //시야 밖 타일 정리
+        List<Vector3Int> removeList = new List<Vector3Int>();
+        foreach (var kvp in activeTiles)
+        {
+            Vector3Int pos = kvp.Key;
+            int dist = Mathf.Abs(pos.x - playerPos.x) + Mathf.Abs(pos.y - playerPos.y);
+
+            if (dist > viewDistance)
+            {
+                TilePool.instance.ReturnTile(kvp.Value);
+                removeList.Add(pos);
+            }
+        }
+        foreach (var pos in removeList)
+        {
+            activeTiles.Remove(pos);
+        }
+    }
     void StartTileHP()
     {
         //그린 타일맵 범위를 가져오기
@@ -183,13 +239,7 @@ public class Map : MonoBehaviour
         if (groundData.ContainsKey(tilePosition))
         {
             var tileData = groundData[tilePosition];
-            Debug.Log($"타일좌표 : {tilePosition} - 광물유무 : {tileData.isMineral}, 데이터 : {tileData.itemData.itemName}");
         }
-        else
-        {
-            Debug.Log($"타일좌표 {tilePosition} 데이터가 없음");
-        }
-
 
         if (crackTilemap != null)
         {
@@ -216,7 +266,6 @@ public class Map : MonoBehaviour
 
                 if (Inventory.instance != null)
                 {
-                    Debug.Log($"템 획득 : {minedItem.itemName}");
                     Inventory.instance.AddItem(minedItem);
                     InventoryUI.instance.UpdateUI();
                 }   
