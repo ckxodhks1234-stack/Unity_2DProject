@@ -31,13 +31,11 @@ public class StartMenu : MonoBehaviour
 
     private void StartNewGame()
     {
-        Debug.Log("새 게임 시작");
         SceneManager.LoadScene("SampleScene");
     }
 
     private void LoadGame()
     {
-        Debug.Log("[StartMenu] 불러오기 시도");
         SaveLoadFlag.ShouldLoadGame = true; //JSON으로 불러올 플래그 설정
         SceneManager.LoadScene("SampleScene");
     }

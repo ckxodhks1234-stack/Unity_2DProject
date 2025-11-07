@@ -13,9 +13,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
     private ItemInfo currentItem;
     private int currentAmount;
 
-    //마우스 올라왔는지
-    private bool isHovered = false;
-
     void Start()
     {
         if (button != null)
@@ -153,13 +150,11 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterH
         if (ShopUI.instance != null && ShopUI.instance.gameObject.activeSelf)
         {
             ShopUI.instance.OpenSellConfirm(currentItem);
-            Debug.Log($"{currentItem.itemName} 판매 시도");
         }
         else
         {
             //평소엔 아이템 사용
             currentItem.Use();
-            Debug.Log($"{currentItem.itemName} 사용");
         }
 
     }

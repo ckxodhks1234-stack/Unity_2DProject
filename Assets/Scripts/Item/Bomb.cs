@@ -34,7 +34,6 @@ public class Bomb : MonoBehaviour
         foreach (var hit in hits)
         {
             if (hit == null) continue;
-            Debug.Log($"[Bomb] ÆøÅºÀÌ µ¥¹ÌÁö ÀÔÈû : {hit.name}");
 
             var player = hit.GetComponent<PlayerHP>();
             if (player != null)

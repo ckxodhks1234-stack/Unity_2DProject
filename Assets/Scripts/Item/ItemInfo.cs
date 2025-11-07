@@ -56,7 +56,6 @@ public class ItemInfo
             case ItemType.Equipment:
             case ItemType.Guitar:
                 //소비가 아닌 아이템은 Use못함
-                Debug.Log($"{itemName}은 사용할 수 없습니다");
                 break;
         }
     }

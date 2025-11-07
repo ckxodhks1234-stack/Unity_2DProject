@@ -215,12 +215,6 @@ public class ShopUI : MonoBehaviour
             //2초 후 자동으로 닫기
             Invoke(nameof(HideSaveMessage), 2f);
         }
-
-        //4. 콘솔 창
-        if (success)
-            Debug.Log("[Save] 모든 저장 완료!");
-        else
-            Debug.LogWarning("[Save] 일부 저장 실패");
     }
 
     private void HideSaveMessage()

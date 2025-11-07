@@ -15,11 +15,9 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Debug.Log("InventoryUI.instance 등록");
 
         //슬롯 부모밑에 있는 슬롯은 자동으로 자녀
         slots.AddRange(slotsParent.GetComponentsInChildren<InventorySlot>());
-        Debug.Log($"슬롯 {slots.Count}개 등록");
     }
     private void OnEnable()
     {

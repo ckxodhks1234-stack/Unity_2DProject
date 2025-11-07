@@ -101,7 +101,6 @@ public class MapSave : MonoBehaviour
 
         string json = JsonUtility.ToJson(saveWrapper, true);
         File.WriteAllText(savePath, json);
-        Debug.Log("[MapSave] 맵 저장 완료");
     }
 
     //맵 로드
@@ -151,9 +150,6 @@ public class MapSave : MonoBehaviour
             if (map.crackTilemap != null)
                 map.crackTilemap.SetTile(pos, crackTile);
         }
-
-        Debug.Log("[MapSave] 맵 로드 완료");
-
         //아이템 인벤토리도 UI업데이트
         if (Inventory.instance != null)
             InventoryUI.instance.UpdateUI();

@@ -24,17 +24,12 @@ public class GameLoad : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"[GameLoad] 씬 로드됨: {scene.name}, ShouldLoadGame = {SaveLoadFlag.ShouldLoadGame}");
-
         if (SaveLoadFlag.ShouldLoadGame)
         {
-            Debug.Log("[GameLoad] 저장된 게임 로드 시작");
-
             //1. 아이템 로드
             if (DataSave.instance != null)
             {
                 DataSave.instance.LoadItems();
-                Debug.Log("[GameLoad] 아이템 로드 완료");
             }
 
             //2. 맵 로드
@@ -42,7 +37,6 @@ public class GameLoad : MonoBehaviour
             if (MapSave.instance != null && map != null)
             {
                 MapSave.instance.LoadMap(map);
-                Debug.Log("[GameLoad] 맵 로드 완료");
             }
 
             SaveLoadFlag.ShouldLoadGame = false;

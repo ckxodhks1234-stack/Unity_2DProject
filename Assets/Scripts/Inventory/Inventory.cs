@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -16,7 +15,6 @@ public class Inventory : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            Debug.Log("Inventory.instance 등록");
         }
         else Destroy(gameObject);
     }
@@ -36,7 +34,7 @@ public class Inventory : MonoBehaviour
             //equipType 확인
             if (item.itemType == ItemType.Equipment && item.equipType == EquipType.None)
             {
-                Debug.LogWarning($"장비 {item.itemName}의 equipType이 None입니다!");
+                Debug.LogWarning($"장비 {item.itemName}의 equipType이 None");
             }
         }
     }

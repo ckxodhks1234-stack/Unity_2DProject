@@ -18,7 +18,7 @@ public class ShopManager : MonoBehaviour
         if (item == null) return false;
         if(PlayerHP.instance == null || Inventory.instance == null)
         {
-            Debug.LogWarning("ShopManager: PlayerStats 또는 Inventory 인스턴스가 없습니다.");
+            Debug.LogWarning("ShopManager : PlayerStats 또는 Inventory 인스턴스가 없음");
             return false;
         }
 
@@ -28,7 +28,6 @@ public class ShopManager : MonoBehaviour
         //인벤토리 공간 확인
         if(!Inventory.instance.HasSpaceFor(item))
         {
-            Debug.Log("인벤토리 공간 부족");
             return false;
         }
 
@@ -36,12 +35,10 @@ public class ShopManager : MonoBehaviour
         {
             PlayerHP.instance.money -= price;
             Inventory.instance.AddItem(item, 1);
-            Debug.Log($"{item.itemName} 구매. -{price}G");
             return true;
         }
         else
         {
-            Debug.Log("돈 부족");
             return false;
         }
     }
@@ -52,7 +49,6 @@ public class ShopManager : MonoBehaviour
 
         if (Inventory.instance == null || PlayerHP.instance == null)
         {
-            Debug.LogWarning("ShopManager: 인스턴스가 없습니다.");
             return false;
         }
 
@@ -60,7 +56,6 @@ public class ShopManager : MonoBehaviour
 
         if(itemCount <= 0)
         {
-            Debug.Log("인벤토리에 해당 아이템이 없습니다");
             return false;
         }
 
@@ -69,7 +64,6 @@ public class ShopManager : MonoBehaviour
         int totalSellPrice = item.sellPrice * itemCount;
         PlayerHP.instance.money += totalSellPrice;
 
-        Debug.Log($"{item.itemName} {itemCount}개 판매, +{totalSellPrice}G");
         return true;
     }
 
@@ -83,7 +77,6 @@ public class ShopManager : MonoBehaviour
 
         if (minerals.Count == 0)
         {
-            Debug.Log("판매할 광물이 없습니다.");
             return false;
         }
 
@@ -95,9 +88,7 @@ public class ShopManager : MonoBehaviour
             Inventory.instance.RemoveItem(item, count);
             totalGain += item.sellPrice * count;
         }
-
         PlayerHP.instance.money += totalGain;
-        Debug.Log($"총 수익: {totalGain}G");
 
         return true;
     }

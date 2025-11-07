@@ -53,23 +53,15 @@ public class PlayerController : MonoBehaviour
         map = FindObjectOfType<Map>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-        //audioSource = GetComponent<AudioSource>();
-        //audioSource.loop = true;    //반복 재생 설정
-        //audioSource.playOnAwake = false; //자동 재생 해제
+        audioSource = GetComponent<AudioSource>();
+        audioSource.loop = true;    //반복 재생 설정
+        audioSource.playOnAwake = false; //자동 재생 해제
+        audioSource.clip = drillClip;
     }
     void Update()
     {
         inputX = Input.GetAxisRaw("Horizontal");
         inputY = Input.GetAxisRaw("Vertical");
-
-        if (isGrounded)
-        {
-            isDrillingInput = (inputY < 0 || inputX != 0) && (Time.time - lastDrillTime >= drillDelay);
-        }
-        else
-        {
-            StopDrillSound(); //공중에선 드릴 소리 멈춤
-        }
     }
 
     private void FixedUpdate()
@@ -79,8 +71,21 @@ public class PlayerController : MonoBehaviour
         Move();
         Fly();
 
-        if (isDrillingInput) Drill();
-        else StopDrillSound();
+        bool shouldDrill = isGrounded && (inputY < 0 || inputX != 0);
+
+        if (shouldDrill && Time.time - lastDrillTime >= drillDelay)
+        {
+            Drill();
+            lastDrillTime = Time.time;
+            //드릴 시작 시점에 소리 재생
+            PlayDrillSound();
+        }
+        else if (!shouldDrill)
+        {
+            //드릴 조건이 아니면 소리 정지
+            StopDrillSound();
+        }
+
     }
 
     private void Move()
@@ -150,15 +155,7 @@ public class PlayerController : MonoBehaviour
         int tileHp = map.GetTileHp(targatTilePos);
         if (tileHp>0)
         {
-            bool destroyed = map.DamagedTile(targatTilePos, drillDamage);
-
-            lastDrillTime = Time.time;
-
-            PlayDrillSound();
-        }
-        else
-        {
-            StopDrillSound();
+            map.DamagedTile(targatTilePos, drillDamage);
         }
     }
 
@@ -203,9 +200,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!isDrillingSoundPlaying && drillClip != null)
         {
-            audioSource.clip = drillClip;
             audioSource.Play();
             isDrillingSoundPlaying = true;
+            Debug.Log("드릴 소리 재생");
         }
     }
 
@@ -215,6 +212,7 @@ public class PlayerController : MonoBehaviour
         {
             audioSource.Stop();
             isDrillingSoundPlaying = false;
+            Debug.Log("드릴 소리 정지");
         }
     }
 }

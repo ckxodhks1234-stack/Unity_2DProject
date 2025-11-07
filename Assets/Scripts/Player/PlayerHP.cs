@@ -5,11 +5,11 @@ public class PlayerHP : MonoBehaviour
     [SerializeField] private int health = 100;
     [SerializeField] private float O2Amount = 100f;
     [SerializeField] private float maxO2 = 100f;
-    [SerializeField] private int fallY = -5;
+    [SerializeField] private int fallY = -10;
     [SerializeField] public int money = 0;
 
     private bool falled = false;
-    private float fallStartY = 0f;
+    private float fallStartY = float.NaN;
 
     private float startTime;
 
@@ -52,21 +52,23 @@ public class PlayerHP : MonoBehaviour
     //낙사판정
     private void Fall()
     {
-        if(!falled && rb.velocity.y < 0f)
+        if (!float.IsNaN(fallStartY))
         {
-            falled = true;
-            fallStartY = transform.position.y;
-        }
-
-        if(falled && playerController.GetIsGrounded())
-        {
-            float fallDistance = fallStartY - transform.position.y;
-            //10이상 떨어지면 체력닳기
-            if (fallDistance > Mathf.Abs(fallY))
+            //이미 추적 중
+            if (playerController.GetIsGrounded())
             {
-                health -= 20;
+                float fallDistance = fallStartY - transform.position.y;
+                if (fallDistance > Mathf.Abs(fallY))    //10이상 떨어지면 낙뎀
+                {
+                    health -= 20;
+                }
+                fallStartY = float.NaN; //초기화
             }
-            falled = false;
+        }
+        else if (rb.velocity.y < 0f)
+        {
+            //떨어지기 시작
+            fallStartY = transform.position.y;
         }
     }
 
@@ -128,7 +130,5 @@ public class PlayerHP : MonoBehaviour
     {
         health += amount;
         health = Mathf.Clamp(health, 0, GetMaxHealth()); // 0~최대 체력 사이로 제한
-
-        Debug.Log($"HP 회복 : {amount}, 현재 HP : {health}");
     }
 }

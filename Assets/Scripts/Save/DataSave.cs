@@ -77,14 +77,12 @@ public class DataSave : MonoBehaviour
 
         string json = JsonUtility.ToJson(wrapper, true);
         File.WriteAllText(savePath, json);
-        Debug.Log("[DataSave] 아이템 저장 완료 : " + savePath);
     }
 
     public void LoadItems()
     {
         if (!File.Exists(savePath))
         {
-            Debug.Log("[DataSave] 저장된 아이템 없음 새로 시작");
             return;
         }
 
@@ -98,7 +96,6 @@ public class DataSave : MonoBehaviour
         }
 
         InventoryUI.instance?.UpdateUI();
-        Debug.Log("[DataSave] 아이템 로드 완료");
     }
 
     //테스트용 초기화
@@ -107,6 +104,5 @@ public class DataSave : MonoBehaviour
         itemCounts.Clear();
         if (File.Exists(savePath)) File.Delete(savePath);
         InventoryUI.instance?.UpdateUI();
-        Debug.Log("[DataSave] 아이템 초기화 완료");
     }
 }

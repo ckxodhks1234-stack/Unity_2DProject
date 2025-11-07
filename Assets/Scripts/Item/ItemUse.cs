@@ -40,15 +40,12 @@ public class ItemUse : MonoBehaviour
         //인벤토리에서 해당 아이템 존재 확인
         if (!inventory.HasItem(item))
         {
-            Debug.Log($"{itemName}이 없습니다");
             return;
         }
 
         switch (itemName)
         {
             case "Bomb":
-                Debug.Log("폭탄 사용");
-
                 //폭탄 프리팹 생성
                 if (bombPrefab != null)
                 {
@@ -60,7 +57,6 @@ public class ItemUse : MonoBehaviour
                 if (PlayerHP.instance != null)
                 {
                     PlayerHP.instance.ApplyO2Up(100f);
-                    Debug.Log("산소 회복");
                 }
                 break;
 
@@ -68,7 +64,6 @@ public class ItemUse : MonoBehaviour
                 if (PlayerHP.instance != null)
                 {
                     PlayerHP.instance.ApplyHeal(50);
-                    Debug.Log($"체력 회복");
                 }
                 break;
         }

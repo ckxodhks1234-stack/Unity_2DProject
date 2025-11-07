@@ -300,18 +300,6 @@ public class Map : MonoBehaviour
         groundData[pos] = data; //딕셔너리에 등록
     }
 
-    private ItemInfo FindMineralItem(string tileName)
-    {
-        if (ItemData.instance == null) return null;
-
-        //타일 이름과 같은 아이템이름 찾기
-        foreach(var item in ItemData.instance.allItems)
-        {
-            if(item.itemName == tileName)
-                return item;
-        }
-        return null;
-    }
     public ItemInfo GetMineralItem(Vector3Int tilePos)
     {
         //타일이 광물이면 아이템

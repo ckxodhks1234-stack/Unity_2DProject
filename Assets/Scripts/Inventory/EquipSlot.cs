@@ -50,6 +50,5 @@ public class EquipSlot : MonoBehaviour, IPointerClickHandler
 
         InventoryUI.instance?.UpdateUI();
         EquipUI.instance?.UpdateStatUI();
-        //Debug.Log($"{equippedItem.itemName} 장비 해제 완료!");
     }
 }

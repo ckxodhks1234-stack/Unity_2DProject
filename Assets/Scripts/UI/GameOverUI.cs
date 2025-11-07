@@ -28,7 +28,6 @@ public class GameOverUI : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Debug.Log("New Game 눌림");
     }
 
     public void OnClickQuit()
@@ -36,7 +35,6 @@ public class GameOverUI : MonoBehaviour
         Time.timeScale = 1f;
         Application.Quit();
         //UnityEditor.EditorApplication.isPlaying = false; //에디터에서만 플레이 중지
-        Debug.Log("Quit 눌림");
     }
 
     public void OnClickLoadGame()
@@ -44,6 +42,5 @@ public class GameOverUI : MonoBehaviour
         Time.timeScale = 1f;
         SaveLoadFlag.ShouldLoadGame = true;
         SceneManager.LoadScene("SampleScene");
-        Debug.Log("Load Game 눌림");
     }
 }

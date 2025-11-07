@@ -50,7 +50,6 @@ public class InventoryShop : MonoBehaviour
     {
         isInventoryOpen = true;
         inventoryUI.SetActive(true);
-        Debug.Log("인벤토리 열림");
 
         //인벤토리 열 때 최신상태 갱신
         if(InventoryUI.instance != null)
@@ -65,8 +64,6 @@ public class InventoryShop : MonoBehaviour
     {
         isInventoryOpen = false;
         inventoryUI.SetActive(false);
-
-        Debug.Log("인벤토리 닫힘");
     }
 
     public void OpenShop()
@@ -77,7 +74,6 @@ public class InventoryShop : MonoBehaviour
         //플레이어가 상점으로 가면 자동으로 열림
         //상점 열릴 때 인벤토리도 자동으로 열리게
         OpenInventory();
-        Debug.Log("상점열림");
     }
 
     public void CloseAll()
@@ -86,6 +82,5 @@ public class InventoryShop : MonoBehaviour
         if(inventoryUI) inventoryUI.SetActive(false);
         isShopOpen = false;
         if(shopUI) shopUI.SetActive(false);
-        Debug.Log("다 닫힘");
     }
 }

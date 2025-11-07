@@ -17,11 +17,10 @@ public class EquipManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            Debug.Log("EquipManager instance가 정상적으로 세팅되었습니다.");
         }
         else if (instance != this)
         {
-            Debug.LogWarning("중복 EquipManager가 발견되어 제거되었습니다.");
+            Debug.LogWarning("중복 EquipManager가 발견되어 제거");
             Destroy(gameObject);
         }
     }
@@ -31,8 +30,8 @@ public class EquipManager : MonoBehaviour
         player = FindObjectOfType<PlayerController>();
         hp = PlayerHP.instance;
 
-        if (player == null) Debug.LogWarning("EquipManager: PlayerController를 찾을 수 없습니다!");
-        if (hp == null) Debug.LogWarning("EquipManager: PlayerHP를 찾을 수 없습니다!");
+        if (player == null) Debug.LogWarning("EquipManager: PlayerController를 찾을 수 없음");
+        if (hp == null) Debug.LogWarning("EquipManager: PlayerHP를 찾을 수 없음");
     }
 
     public ItemInfo EquipItem(ItemInfo item)
@@ -89,7 +88,7 @@ public class EquipManager : MonoBehaviour
 
         if (player == null || hp == null)
         {
-            Debug.LogWarning("EquipManager: Player 참조가 null입니다. Start()에서 초기화되지 않았을 수 있습니다.");
+            Debug.LogWarning("EquipManager: Player가 null입니다. Start()에서 초기화되지 않았을 수 있습니다");
             return;
         }
 
@@ -123,13 +122,5 @@ public class EquipManager : MonoBehaviour
                 player.ApplySpeedStat(-item.speedUpAmount, -item.flyUpAmount);
                 break;
         }
-    }
-
-    private void UpdateUI()
-    {
-        if (EquipUI.instance != null)
-            EquipUI.instance.UpdateStatUI();
-        else
-            Debug.LogWarning("EquipUI.instance가 null입니다!");
     }
 }
