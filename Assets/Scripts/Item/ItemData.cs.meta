@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: 976dde5627aa3384db817c97f540a3de
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - copperSprite: {fileID: 21300000, guid: ef042fe024dfb034eac2ef765130819c, type: 3}
+  - silverSprite: {fileID: 21300000, guid: 168e50186cfbef746921b06f38754aff, type: 3}
+  - goldSprite: {fileID: 21300000, guid: eb9d88ff1637cc34d833c87b16c334d5, type: 3}
+  - diamondSprite: {fileID: 21300000, guid: 7cadb51698678bb4ba344369ac640895, type: 3}
+  - amethystSprite: {fileID: 21300000, guid: 33cc14f51e548e941bc3a217d798ba91, type: 3}
+  - rainbowSprite: {fileID: 21300000, guid: 68a4be505db7f5242b1ea1dc2547f68e, type: 3}
+  - boxSprite: {fileID: 11400000, guid: 5b00aca8826f3a24abf3c43ad3d61d6f, type: 2}
+  - capsuleSprite: {instanceID: 0}
+  - bombSprite: {instanceID: 0}
+  - drill1Sprite: {instanceID: 0}
+  - drill2Sprite: {instanceID: 0}
+  - helmet1Sprite: {instanceID: 0}
+  - helmet2Sprite: {instanceID: 0}
+  - shoes1Sprite: {instanceID: 0}
+  - shoes2Sprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

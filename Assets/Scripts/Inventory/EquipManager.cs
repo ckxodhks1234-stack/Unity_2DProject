@@ -1,0 +1,126 @@
+using UnityEngine;
+
+public class EquipManager : MonoBehaviour
+{
+    public static EquipManager instance;
+
+    [Header("장착 슬롯")]
+    public EquipSlot drillSlot;
+    public EquipSlot helmetSlot;
+    public EquipSlot shoesSlot;
+
+    private PlayerController player;
+    private PlayerHP hp;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Debug.LogWarning("중복 EquipManager가 발견되어 제거");
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        player = FindObjectOfType<PlayerController>();
+        hp = PlayerHP.instance;
+
+        if (player == null) Debug.LogWarning("EquipManager: PlayerController를 찾을 수 없음");
+        if (hp == null) Debug.LogWarning("EquipManager: PlayerHP를 찾을 수 없음");
+    }
+
+    public ItemInfo EquipItem(ItemInfo item)
+    {
+        if (item == null || item.itemType != ItemType.Equipment)
+            return null;
+
+        EquipSlot targetSlot = null;
+
+        switch (item.equipType)
+        {
+            case EquipType.Drill:
+                targetSlot = drillSlot;
+                break;
+            case EquipType.Helmet:
+                targetSlot = helmetSlot;
+                break;
+            case EquipType.Shoes:
+                targetSlot = shoesSlot;
+                break;
+        }
+        if(targetSlot == null)
+        {
+            Debug.LogWarning($"EquipManager: 슬롯이 없음 ({item.itemName})");
+            return null;
+        }
+
+        //기존 장비,능력치 반환
+        ItemInfo oldItem = targetSlot.equippedItem;
+        if (oldItem != null)
+        {
+            RemoveEquipStats(oldItem);
+        }
+
+        //슬롯에 새 장비 장착
+        targetSlot.SetItem(item);
+        ApplyEquipStats(item);
+        EquipUI.instance?.UpdateStatUI();
+
+        return oldItem;
+    }
+
+    public void NoEquipItem(ItemInfo item)
+    {
+        if (item == null) return;
+        RemoveEquipStats(item);
+        EquipUI.instance?.UpdateStatUI();
+    }
+
+    //아이템 능력치 적용
+    private void ApplyEquipStats(ItemInfo item)
+    {
+        if(item == null) return;
+
+        if (player == null || hp == null)
+        {
+            Debug.LogWarning("EquipManager: Player가 null입니다. Start()에서 초기화되지 않았을 수 있습니다");
+            return;
+        }
+
+        switch (item.equipType)
+        {
+            case EquipType.Drill:
+                if (player != null) player.ApplyDrillStat(item.damageUpAmount);
+                break;
+            case EquipType.Helmet:
+                if (hp != null) hp.ApplyO2Stat(item.maxO2UpAmount);
+                break;
+            case EquipType.Shoes:
+                if (player != null) player.ApplySpeedStat(item.speedUpAmount, item.flyUpAmount);
+                break;
+        }
+    }
+
+    private void RemoveEquipStats(ItemInfo item)
+    {
+        if (item == null || player == null || hp == null) return;
+
+        switch (item.equipType)
+        {
+            case EquipType.Drill:
+                player.ApplyDrillStat(-item.damageUpAmount);
+                break;
+            case EquipType.Helmet:
+                hp.ApplyO2Stat(-item.maxO2UpAmount);
+                break;
+            case EquipType.Shoes:
+                player.ApplySpeedStat(-item.speedUpAmount, -item.flyUpAmount);
+                break;
+        }
+    }
+}
